@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Platform Reseller Fee & Profit Calculator (2026)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800 font-sans p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-700">Reseller Profit Calculator</h1>
+            <p class="text-gray-600 mt-2">Instantly calculate net take-home profit across major US marketplaces.</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Enter Item Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Selling Price ($)</label>
+                    <input type="number" id="salePrice" placeholder="50.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Item Cost ($)</label>
+                    <input type="number" id="itemCost" placeholder="10.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Seller Shipping Cost ($)</label>
+                    <input type="number" id="sellerShipping" placeholder="5.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Buyer Paid Shipping ($)</label>
+                    <input type="number" id="buyerShipping" placeholder="0.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            
+            <!-- eBay Card -->
+            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+                <h3 class="text-lg font-bold text-blue-600 border-b pb-2 mb-3">eBay</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="ebayFee" class="font-semibold text-red-500">$0.00</span></div>
+                    <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="ebayProfit" class="text-emerald-600">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="ebayMargin">0%</span></div>
+                </div>
+            </div>
+
+            <!-- Poshmark Card -->
+            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+                <h3 class="text-lg font-bold text-red-600 border-b pb-2 mb-3">Poshmark</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="poshmarkFee" class="font-semibold text-red-500">$0.00</span></div>
+                    <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="poshmarkProfit" class="text-emerald-600">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="poshmarkMargin">0%</span></div>
+                </div>
+            </div>
+
+            <!-- Mercari Card -->
+            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+                <h3 class="text-lg font-bold text-indigo-600 border-b pb-2 mb-3">Mercari</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="mercariFee" class="font-semibold text-red-500">$0.00</span></div>
+                    <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="mercariProfit" class="text-emerald-600">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="mercariMargin">0%</span></div>
+                </div>
+            </div>
+
+            <!-- Etsy Card -->
+            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+                <h3 class="text-lg font-bold text-orange-600 border-b pb-2 mb-3">Etsy</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="etsyFee" class="font-semibold text-red-500">$0.00</span></div>
+                    <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="etsyProfit" class="text-emerald-600">$0.00</span></div>
+                    <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="etsyMargin">0%</span></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Calculation Engine -->
+    <script>
+        function calculateProfits() {
+            const price = parseFloat(document.getElementById('salePrice').value) || 0;
+            const cost = parseFloat(document.getElementById('itemCost').value) || 0;
+            const sellerShip = parseFloat(document.getElementById('sellerShipping').value) || 0;
+            const buyerShip = parseFloat(document.getElementById('buyerShipping').value) || 0;
+
+            const totalRevenue = price + buyerShip;
+
+            if (price <= 0) {
+                resetOutputs();
+                return;
+            }
+
+            // 1. eBay Calculations (13.25% FVF + $0.30 fixed fee)
+            const ebayFee = (totalRevenue * 0.1325) + 0.30;
+            const ebayProfit = totalRevenue - ebayFee - cost - sellerShip;
+            const ebayMargin = (ebayProfit / price) * 100;
+            updateCard('ebay', ebayFee, ebayProfit, ebayMargin);
+
+            // 2. Poshmark Calculations ($2.95 under $15, or 20% on $15+)
+            const poshmarkFee = price < 15 ? 2.95 : price * 0.20;
+            const poshmarkProfit = price - poshmarkFee - cost - sellerShip;
+            const poshmarkMargin = (poshmarkProfit / price) * 100;
+            updateCard('poshmark', poshmarkFee, poshmarkProfit, poshmarkMargin);
+
+            // 3. Mercari Calculations (10% on total sale)
+            const mercariFee = totalRevenue * 0.10;
+            const mercariProfit = totalRevenue - mercariFee - cost - sellerShip;
+            const mercariMargin = (mercariProfit / price) * 100;
+            updateCard('mercari', mercariFee, mercariProfit, mercariMargin);
+
+            // 4. Etsy Calculations (6.5% transaction + $0.20 listing + 3% + $0.25 payment processing)
+            const etsyFee = (totalRevenue * 0.065) + 0.20 + (totalRevenue * 0.03 + 0.25);
+            const etsyProfit = totalRevenue - etsyFee - cost - sellerShip;
+            const etsyMargin = (etsyProfit / price) * 100;
+            updateCard('etsy', etsyFee, etsyProfit, etsyMargin);
+        }
+
+        function updateCard(platform, fee, profit, margin) {
+            document.getElementById(`${platform}Fee`).innerText = `$${fee.toFixed(2)}`;
+            document.getElementById(`${platform}Profit`).innerText = `$${profit.toFixed(2)}`;
+            document.getElementById(`${platform}Margin`).innerText = `${margin.toFixed(1)}%`;
+        }
+
+        function resetOutputs() {
+            ['ebay', 'poshmark', 'mercari', 'etsy'].forEach(platform => {
+                document.getElementById(`${platform}Fee`).innerText = '$0.00';
+                document.getElementById(`${platform}Profit`).innerText = '$0.00';
+                document.getElementById(`${platform}Margin`).innerText = '0%';
+            });
+        }
+    </script>
+</body>
+</html>
