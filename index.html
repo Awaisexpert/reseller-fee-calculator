@@ -3,87 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Platform Reseller Fee & Profit Calculator (2026)</title>
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>Reseller Fee & Profit Calculator (2026) | eBay, Poshmark, Mercari, Etsy</title>
+    <meta name="description" content="Free multi-platform reseller profit calculator. Instantly calculate net payout, seller fees, and profit margins for eBay, Poshmark, Mercari, and Etsy.">
+    <meta name="keywords" content="reseller fee calculator, ebay profit calculator, poshmark fee calculator, mercari seller fees, etsy profit calculator 2026">
+    <link rel="canonical" href="https://www.reseller-fee-calculator.com/">
+
+    <!-- Open Graph / Social Sharing Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.reseller-fee-calculator.com/">
+    <meta property="og:title" content="Reseller Fee & Profit Calculator (2026)">
+    <meta property="og:description" content="Calculate real net profit across major US e-commerce platforms instantly.">
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800 font-sans p-4 md:p-8">
 
-    <div class="max-w-5xl mx-auto">
-        <!-- Header -->
+    <main class="max-w-5xl mx-auto">
+        <!-- Main Header -->
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-700">Reseller Profit Calculator</h1>
-            <p class="text-gray-600 mt-2">Instantly calculate net take-home profit across major US marketplaces.</p>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-indigo-700">Reseller Profit & Fee Calculator</h1>
+            <p class="text-gray-600 mt-2 text-base md:text-lg">Calculate net take-home earnings across major US marketplaces in real-time.</p>
         </header>
 
-        <!-- Input Section -->
-        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
+        <!-- Interactive Calculator Card -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
             <h2 class="text-xl font-bold mb-4 text-gray-700">Enter Item Details</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-1">Selling Price ($)</label>
+                    <label for="salePrice" class="block text-sm font-semibold text-gray-600 mb-1">Selling Price ($)</label>
                     <input type="number" id="salePrice" placeholder="50.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-1">Item Cost ($)</label>
+                    <label for="itemCost" class="block text-sm font-semibold text-gray-600 mb-1">Item Cost (COGS) ($)</label>
                     <input type="number" id="itemCost" placeholder="10.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-1">Seller Shipping Cost ($)</label>
+                    <label for="sellerShipping" class="block text-sm font-semibold text-gray-600 mb-1">Seller Shipping Cost ($)</label>
                     <input type="number" id="sellerShipping" placeholder="5.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-1">Buyer Paid Shipping ($)</label>
+                    <label for="buyerShipping" class="block text-sm font-semibold text-gray-600 mb-1">Buyer Paid Shipping ($)</label>
                     <input type="number" id="buyerShipping" placeholder="0.00" step="0.01" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none" oninput="calculateProfits()">
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Output Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <!-- eBay Card -->
-            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+            <article class="bg-white rounded-xl shadow border border-gray-200 p-5">
                 <h3 class="text-lg font-bold text-blue-600 border-b pb-2 mb-3">eBay</h3>
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="ebayFee" class="font-semibold text-red-500">$0.00</span></div>
                     <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="ebayProfit" class="text-emerald-600">$0.00</span></div>
                     <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="ebayMargin">0%</span></div>
                 </div>
-            </div>
+            </article>
 
             <!-- Poshmark Card -->
-            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+            <article class="bg-white rounded-xl shadow border border-gray-200 p-5">
                 <h3 class="text-lg font-bold text-red-600 border-b pb-2 mb-3">Poshmark</h3>
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="poshmarkFee" class="font-semibold text-red-500">$0.00</span></div>
                     <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="poshmarkProfit" class="text-emerald-600">$0.00</span></div>
                     <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="poshmarkMargin">0%</span></div>
                 </div>
-            </div>
+            </article>
 
             <!-- Mercari Card -->
-            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+            <article class="bg-white rounded-xl shadow border border-gray-200 p-5">
                 <h3 class="text-lg font-bold text-indigo-600 border-b pb-2 mb-3">Mercari</h3>
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="mercariFee" class="font-semibold text-red-500">$0.00</span></div>
                     <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="mercariProfit" class="text-emerald-600">$0.00</span></div>
                     <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="mercariMargin">0%</span></div>
                 </div>
-            </div>
+            </article>
 
             <!-- Etsy Card -->
-            <div class="bg-white rounded-xl shadow border border-gray-200 p-5">
+            <article class="bg-white rounded-xl shadow border border-gray-200 p-5">
                 <h3 class="text-lg font-bold text-orange-600 border-b pb-2 mb-3">Etsy</h3>
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between"><span>Est. Platform Fee:</span> <span id="etsyFee" class="font-semibold text-red-500">$0.00</span></div>
                     <div class="flex justify-between border-t pt-2 text-base font-bold"><span>Net Profit:</span> <span id="etsyProfit" class="text-emerald-600">$0.00</span></div>
                     <div class="flex justify-between text-xs text-gray-500"><span>Profit Margin:</span> <span id="etsyMargin">0%</span></div>
                 </div>
-            </div>
+            </article>
+        </section>
 
-        </div>
-    </div>
+        <!-- SEO Content Section (Crucial for Google Ranking) -->
+        <article class="bg-white rounded-xl shadow-md p-6 md:p-8 border border-gray-200 space-y-6 text-gray-700 leading-relaxed">
+            <h2 class="text-2xl font-bold text-gray-900 border-b pb-3">US E-Commerce Marketplace Fee Breakdown (2026)</h2>
+            <p>Accurately calculating seller fees before listing inventory is critical to running a profitable reselling business. This multi-platform tool computes expected costs across top US retail platforms in real time.</p>
+
+            <h3 class="text-xl font-bold text-gray-800">eBay Selling Fees</h3>
+            <p>Most categories on eBay incur a standard Final Value Fee of approximately 13.25% to 13.6% plus a $0.30 to $0.40 per-order fixed processing charge. Fees are calculated against the total transaction amount paid by the buyer, including shipping costs and applicable sales tax.</p>
+
+            <h3 class="text-xl font-bold text-gray-800">Poshmark Selling Fees</h3>
+            <p>Poshmark uses a straightforward fee structure: a flat commission of $2.95 for items priced under $15, and a flat 20% commission for items sold at $15 or higher.</p>
+
+            <h3 class="text-xl font-bold text-gray-800">Mercari Selling Fees</h3>
+            <p>Mercari evaluates seller commission directly based on gross sale pricing. Standard estimated platform fee structures calculate at roughly 10% of total revenue.</p>
+
+            <h3 class="text-xl font-bold text-gray-800">Etsy Selling & Processing Fees</h3>
+            <p>Etsy charges a $0.20 listing fee per unit alongside a 6.5% transaction fee. Additional payment processing fees (typically 3% + $0.25) apply based on standard US merchant processing schedules.</p>
+        </article>
+    </main>
+
+    <footer class="text-center text-gray-500 text-xs py-8">
+        <p>&copy; 2026 Reseller Fee Calculator. All rights reserved. Designed for e-commerce sellers.</p>
+    </footer>
 
     <!-- Calculation Engine -->
     <script>
@@ -100,25 +132,25 @@
                 return;
             }
 
-            // 1. eBay Calculations (13.25% FVF + $0.30 fixed fee)
+            // eBay (13.25% + $0.30 fixed fee)
             const ebayFee = (totalRevenue * 0.1325) + 0.30;
             const ebayProfit = totalRevenue - ebayFee - cost - sellerShip;
             const ebayMargin = (ebayProfit / price) * 100;
             updateCard('ebay', ebayFee, ebayProfit, ebayMargin);
 
-            // 2. Poshmark Calculations ($2.95 under $15, or 20% on $15+)
+            // Poshmark ($2.95 under $15, 20% over $15)
             const poshmarkFee = price < 15 ? 2.95 : price * 0.20;
             const poshmarkProfit = price - poshmarkFee - cost - sellerShip;
             const poshmarkMargin = (poshmarkProfit / price) * 100;
             updateCard('poshmark', poshmarkFee, poshmarkProfit, poshmarkMargin);
 
-            // 3. Mercari Calculations (10% on total sale)
+            // Mercari (10% flat)
             const mercariFee = totalRevenue * 0.10;
             const mercariProfit = totalRevenue - mercariFee - cost - sellerShip;
             const mercariMargin = (mercariProfit / price) * 100;
             updateCard('mercari', mercariFee, mercariProfit, mercariMargin);
 
-            // 4. Etsy Calculations (6.5% transaction + $0.20 listing + 3% + $0.25 payment processing)
+            // Etsy (6.5% transaction + $0.20 listing + 3% + $0.25 processing)
             const etsyFee = (totalRevenue * 0.065) + 0.20 + (totalRevenue * 0.03 + 0.25);
             const etsyProfit = totalRevenue - etsyFee - cost - sellerShip;
             const etsyMargin = (etsyProfit / price) * 100;
@@ -141,3 +173,4 @@
     </script>
 </body>
 </html>
+
