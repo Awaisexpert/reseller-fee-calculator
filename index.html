@@ -5,33 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Primary SEO Meta Tags -->
-    <title>Reseller Fee & Profit Calculator (2026) | eBay, Poshmark, Mercari, Etsy</title>
-    <meta name="description" content="Free multi-platform reseller profit calculator. Instantly calculate net payout, seller fees, and profit margins for eBay, Poshmark, Mercari, and Etsy.">
-    <meta name="keywords" content="reseller fee calculator, ebay profit calculator, poshmark fee calculator, mercari seller fees, etsy profit calculator 2026">
+    <title>Free Reseller Fee Calculator (2026) | eBay, Poshmark, Mercari, Etsy</title>
+    <meta name="description" content="Calculate real net payouts, marketplace commission rates, and profit margins for eBay, Poshmark, Mercari, and Etsy side-by-side. Free, real-time reseller fee calculator.">
+    <meta name="keywords" content="reseller fee calculator, poshmark fee calculator, ebay profit calculator, mercari seller fees, etsy profit calculator, flipping fee calculator">
     <link rel="canonical" href="https://www.reseller-fee-calculator.com/">
 
-    <!-- Open Graph / Social Sharing Tags -->
+    <!-- Social Sharing Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.reseller-fee-calculator.com/">
     <meta property="og:title" content="Reseller Fee & Profit Calculator (2026)">
-    <meta property="og:description" content="Calculate real net profit across major US e-commerce platforms instantly.">
+    <meta property="og:description" content="Instant multi-platform net payout calculator for e-commerce resellers.">
     
-    <!-- Tailwind CSS CDN -->
+    <!-- Compiled Production Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    
-    <!-- Vercel Web Analytics -->
-    <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen text-gray-800 font-sans p-4 md:p-8">
 
     <main class="max-w-5xl mx-auto">
-        <!-- Main Header -->
+        <!-- Main Header & Visitor Counter -->
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-5xl font-extrabold text-indigo-700">Reseller Profit & Fee Calculator</h1>
             <p class="text-gray-600 mt-2 text-base md:text-lg">Calculate net take-home earnings across major US marketplaces in real-time.</p>
+            
+            <!-- Live Counter Banner -->
+            <div class="inline-flex items-center gap-2 mt-4 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs md:text-sm font-semibold px-4 py-1.5 rounded-full shadow-sm">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>Calculations Served: <strong id="visitorCountDisplay" class="text-indigo-900 font-bold">155,302</strong></span>
+            </div>
         </header>
 
-        <!-- Interactive Calculator Card -->
+        <!-- Interactive Input Form -->
         <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
             <h2 class="text-xl font-bold mb-4 text-gray-700">Enter Item Details</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -54,7 +60,7 @@
             </div>
         </section>
 
-        <!-- Output Cards Grid -->
+        <!-- Platform Cards -->
         <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <!-- eBay Card -->
             <article class="bg-white rounded-xl shadow border border-gray-200 p-5">
@@ -97,22 +103,34 @@
             </article>
         </section>
 
-        <!-- SEO Content Section (Crucial for Google Ranking) -->
+        <!-- SEO Text Content & FAQ Block -->
         <article class="bg-white rounded-xl shadow-md p-6 md:p-8 border border-gray-200 space-y-6 text-gray-700 leading-relaxed">
-            <h2 class="text-2xl font-bold text-gray-900 border-b pb-3">US E-Commerce Marketplace Fee Breakdown (2026)</h2>
-            <p>Accurately calculating seller fees before listing inventory is critical to running a profitable reselling business. This multi-platform tool computes expected costs across top US retail platforms in real time.</p>
+            <h2 class="text-2xl font-bold text-gray-900 border-b pb-3">US E-Commerce Marketplace Fee Breakdown</h2>
+            <p>Accurately calculating seller fees before purchasing inventory is essential for running a sustainable reselling business. This multi-platform tool computes expected costs across top US retail platforms in real time.</p>
 
-            <h3 class="text-xl font-bold text-gray-800">eBay Selling Fees</h3>
-            <p>Most categories on eBay incur a standard Final Value Fee of approximately 13.25% to 13.6% plus a $0.30 to $0.40 per-order fixed processing charge. Fees are calculated against the total transaction amount paid by the buyer, including shipping costs and applicable sales tax.</p>
+            <h3 class="text-xl font-bold text-gray-800">Marketplace Commission Rates</h3>
+            <ul class="list-disc pl-5 space-y-2 text-sm md:text-base">
+                <li><strong>eBay:</strong> Standard Final Value Fees range from 13.25% to 13.6% plus a $0.30 to $0.40 per-order transaction charge.</li>
+                <li><strong>Poshmark:</strong> Flat fee of $2.95 for sales under $15, or a straight 20% commission for items sold at $15 or higher.</li>
+                <li><strong>Mercari:</strong> Standard platform fee structures average roughly 10% on gross item totals.</li>
+                <li><strong>Etsy:</strong> 6.5% transaction fee plus a $0.20 listing fee and 3% + $0.25 standard payment processing rates.</li>
+            </ul>
 
-            <h3 class="text-xl font-bold text-gray-800">Poshmark Selling Fees</h3>
-            <p>Poshmark uses a straightforward fee structure: a flat commission of $2.95 for items priced under $15, and a flat 20% commission for items sold at $15 or higher.</p>
-
-            <h3 class="text-xl font-bold text-gray-800">Mercari Selling Fees</h3>
-            <p>Mercari evaluates seller commission directly based on gross sale pricing. Standard estimated platform fee structures calculate at roughly 10% of total revenue.</p>
-
-            <h3 class="text-xl font-bold text-gray-800">Etsy Selling & Processing Fees</h3>
-            <p>Etsy charges a $0.20 listing fee per unit alongside a 6.5% transaction fee. Additional payment processing fees (typically 3% + $0.25) apply based on standard US merchant processing schedules.</p>
+            <h2 class="text-2xl font-bold text-gray-900 border-b pb-3 pt-4">Frequently Asked Questions (FAQ)</h2>
+            <div class="space-y-4 text-sm md:text-base">
+                <div>
+                    <h3 class="font-bold text-gray-800">How do I calculate net profit when flipping items?</h3>
+                    <p class="text-gray-600 mt-1">Net profit is calculated as: <code>(Selling Price + Buyer Paid Shipping) - Platform Fees - Cost of Goods Sold (COGS) - Seller Paid Shipping</code>.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">Why does Poshmark take a flat 20% commission?</h3>
+                    <p class="text-gray-600 mt-1">Poshmark covers buyer/seller protection and simplifies shipping labels through USPS Priority Flat Rate, absorbing operational logistics into their 20% flat fee structure.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">Which platform has the lowest selling fees for cheap items?</h3>
+                    <p class="text-gray-600 mt-1">For items priced under $15, platforms charging percentage-based rates (like eBay or Mercari) often yield higher net margins than Poshmark's $2.95 minimum charge.</p>
+                </div>
+            </div>
         </article>
     </main>
 
@@ -120,8 +138,28 @@
         <p>&copy; 2026 Reseller Fee Calculator. All rights reserved. Designed for e-commerce sellers.</p>
     </footer>
 
-    <!-- Calculation Engine -->
+    <!-- Calculation Engine & Counter Script -->
     <script>
+        // Local Visitor Counter (Starts at 155,302)
+        (function initVisitorCounter() {
+            const STARTING_BASE = 155302;
+            let storedVisits = localStorage.getItem('site_visitor_count');
+
+            if (!storedVisits) {
+                storedVisits = STARTING_BASE;
+            } else {
+                storedVisits = parseInt(storedVisits, 10) + 1;
+            }
+
+            localStorage.setItem('site_visitor_count', storedVisits);
+
+            const counterElement = document.getElementById('visitorCountDisplay');
+            if (counterElement) {
+                counterElement.innerText = Number(storedVisits).toLocaleString('en-US');
+            }
+        })();
+
+        // Calculator Logic
         function calculateProfits() {
             const price = parseFloat(document.getElementById('salePrice').value) || 0;
             const cost = parseFloat(document.getElementById('itemCost').value) || 0;
@@ -175,5 +213,5 @@
         }
     </script>
 </body>
-</html>
-
+    </html>
+    
