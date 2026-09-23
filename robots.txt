@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://www.reseller-fee-calculator.com/sitemap.xml
