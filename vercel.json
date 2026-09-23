@@ -1,1 +1,22 @@
-{} 
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "reseller-fee-calculator.com"
+        }
+      ],
+      "destination": "https://www.reseller-fee-calculator.com/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "statusCode": 308
+    }
+  ]
+}
