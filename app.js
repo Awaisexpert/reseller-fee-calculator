@@ -1,16 +1,74 @@
-const STATES={AL:.041,AK:0,AZ:.056,AR:.065,CA:.073,CO:.029,CT:.063,DE:0,DC:.06,FL:.06,GA:.04,HI:.04,ID:.06,IL:.063,IN:.07,IA:.06,KS:.065,KY:.06,LA:.045,ME:.055,MD:.06,MA:.0625,MI:.06,MN:.0688,MS:.07,MO:.0425,MT:0,NE:.0555,NV:.0685,NH:0,NJ:.0663,NM:.0513,NY:.08,NC:.0475,ND:.05,OH:.0575,OK:.045,OR:0,PA:.06,RI:.07,SC:.06,SD:.045,TN:.07,TX:.0625,UT:.061,VT:.066,VA:.053,WA:.065,WV:.06,WI:.0575,WY:.04};
-const PLATFORM_SETS={all:{eBay:[.1325,.30],Poshmark:[.20,0],Mercari:[.10,0],Etsy:[.095,.45]},mercari:{Mercari:[.10,0]},depop:{Depop:[.10,0]},compare:{Poshmark:[.20,0],eBay:[.1325,.30]}};
-const SITE_URL='https://www.reseller-fee-calculator.com/';
-const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n);
-const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
-const variants=[{headline:'Find your most profitable marketplace',sub:'Compare estimated U.S. marketplace fees and keep more of every sale.',cta:'Compare my real profit'},{headline:'Know your profit before you list',sub:'Price smarter with transparent fee, shipping, and margin estimates in USD.',cta:'See my best marketplace'}];
-function getVariant(){let v=localStorage.getItem('reseller_ab_variant');if(v===null){v=Math.random()<.5?'0':'1';localStorage.setItem('reseller_ab_variant',v)}return variants[+v]||variants[0]}
-function track(name){if(typeof window.gtag==='function')window.gtag('event',name,{event_category:'reseller_calculator',ab_variant:localStorage.getItem('reseller_ab_variant')})}
-function inputs(){return ['salePrice','itemCost','sellerShipping','buyerShipping'].map(id=>Math.max(0,+document.getElementById(id)?.value||0))}
-function stateTax(){return STATES[document.getElementById('state')?.value||'CA']??0}
-function formatResult(name,fee,net,profit,margin){return [`${name} Reseller Estimate`,`Estimated fees: ${money(fee)}`,`Net payout: ${money(net)}`,`Estimated profit: ${money(profit)}`,`Profit margin: ${margin.toFixed(1)}%`,`Website: ${SITE_URL}`,`#ResellerFeeCalculator #ResellerProfit #USResellers`].join('\n')}
-function resultCard(item,best){const {name,fee,net,profit,margin,score}=item;const el=document.createElement('article');el.className=`result-card${best?' result-card--best':''}`;const reason=best?'<p class="card-reason"><strong>Why this platform?</strong> Highest estimated net profit after fees and shipping.</p>':'';const shareText=formatResult(name,fee,net,profit,margin);el.innerHTML=`${best?'<span class="best-ribbon">Best fit</span>':''}<div class="result-card__top"><div><span class="eyebrow">${name}</span><h3>${money(profit)} <small>profit</small></h3></div><span class="badge">${margin.toFixed(1)}% margin</span></div><dl><div><dt>Estimated fees</dt><dd>${money(fee)}</dd></div><div><dt>Net payout</dt><dd>${money(net)}</dd></div><div><dt>Fit score</dt><dd>${score}/100</dd></div></dl>${reason}<div class="card-actions"><button class="button button--secondary copy-btn" type="button">Copy</button><button class="button button--primary share-btn" type="button">Share</button></div>`;el.querySelector('.copy-btn').onclick=async()=>{try{await navigator.clipboard.writeText(shareText);el.querySelector('.copy-btn').textContent='Copied!';track('copy_result')}catch(e){el.querySelector('.copy-btn').textContent='Copy failed'}};el.querySelector('.share-btn').onclick=async()=>{try{if(navigator.share)await navigator.share({title:`${name} reseller estimate`,text:shareText,url:SITE_URL});else{await navigator.clipboard.writeText(shareText);el.querySelector('.share-btn').textContent='Link copied!';setTimeout(()=>el.querySelector('.share-btn').textContent='Share',1400)}track('share_result')}catch(e){}};return el}
-function updateTax(price){const tax=document.getElementById('taxEstimate');if(tax)tax.textContent=`Estimated buyer sales tax in ${document.getElementById('state')?.value||'CA'}: ${money(price*stateTax())} (${(stateTax()*100).toFixed(2)}%). State tax rules vary; this is not a seller-tax calculation.`}
-function calculate(){const [price,cost,shipping,buyerShipping]=inputs(),results=document.getElementById('results'),recommendation=document.getElementById('recommendation');if(!results)return;if(price<=0){results.innerHTML='<div class="empty-results"><strong>Enter a selling price to compare platforms.</strong><span>Results update instantly as you enter your sale details.</span></div>';if(recommendation)recommendation.innerHTML='<span class="eyebrow">Personalized recommendation</span><h2>Start with your selling price</h2><p>Your estimated fees, payout, and best-fit platform will appear here.</p>';updateTax(0);return}results.innerHTML='';const set=PLATFORM_SETS[document.body.dataset.platform||'all'];const estimates=Object.entries(set).map(([name,[rate,flat]])=>{const fee=price*rate+flat,net=price-fee-shipping+buyerShipping,profit=net-cost,margin=net>0?profit/net*100:0,feeBurden=fee/price*100,score=Math.round(clamp(50+margin*.8-feeBurden*1.2+(buyerShipping>0?3:0),0,100));return{name,fee,net,profit,margin,score}});const best=estimates.reduce((winner,item)=>item.score>winner.score?item:winner,estimates[0]);estimates.forEach(item=>results.appendChild(resultCard(item,item===best)));if(recommendation)recommendation.innerHTML=`<span class="eyebrow">Best-fit recommendation</span><h2>${best.name} is the strongest fit for this sale</h2><p>Estimated profit is <strong>${money(best.profit)}</strong> with a <strong>${best.margin.toFixed(1)}% margin</strong>. The ${best.score}/100 score weighs profit, margin, and fee burden—not just the lowest fee.</p>`;updateTax(price)}
-function setDefaults(){const defaults={salePrice:'50.00',itemCost:'10.00',sellerShipping:'5.00',buyerShipping:'0.00'};Object.entries(defaults).forEach(([id,value])=>{const el=document.getElementById(id);if(el&&!el.value)el.value=value})}
-document.addEventListener('DOMContentLoaded',()=>{const variant=getVariant(),headline=document.getElementById('heroHeadline'),subtitle=document.getElementById('heroSubtitle'),cta=document.getElementById('heroCta');if(headline)headline.textContent=variant.headline;if(subtitle)subtitle.textContent=variant.sub;if(cta)cta.textContent=variant.cta;const select=document.getElementById('state');if(select){select.innerHTML='<option value="CA">California (most common)</option>';Object.keys(STATES).sort().filter(s=>s!=='CA').forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;select.appendChild(o)})}setDefaults();document.querySelectorAll('input,select').forEach(i=>i.addEventListener('input',calculate));cta?.addEventListener('click',()=>{document.getElementById('salePrice')?.focus();document.getElementById('calculator')?.scrollIntoView({behavior:'smooth'});track('cta_click')});calculate()});
+const STATES = { AL:.041, AK:0, AZ:.056, AR:.065, CA:.073, CO:.029, CT:.063, DE:0, DC:.06, FL:.06, GA:.04, HI:.04, ID:.06, IL:.063, IN:.07, IA:.06, KS:.065, KY:.06, LA:.045, ME:.055, MD:.06, MA:.0625, MI:.06, MN:.0688, MS:.07, MO:.0423, MT:0, NE:.055, NV:.0685, NH:0, NJ:.0663, NM:.0513, NY:.08, NC:.0475, ND:.05, OH:.0575, OK:.045, OR:0, PA:.06, RI:.07, SC:.06, SD:.06, TN:.07, TX:.0625, UT:.061, VT:.06, VA:.053, WA:.065, WV:.06, WI:.05, WY:.04 };
+const PLATFORMS = ["eBay", "Poshmark", "Mercari", "Etsy", "Depop"];
+const valueOf = (id) => Math.max(0, Number(document.getElementById(id)?.value) || 0);
+const core = () => window.ResellerCalculator;
+
+function reverseCard(platform, branch, type, target) {
+  const card = document.createElement("article");
+  card.className = "result-card";
+  card.innerHTML = `<h3>${platform}</h3><p class="result-card__label">Required listing price</p><p class="result-card__value">${core().money(core().round(branch.price))}</p><p>Estimated fee: ${core().money(core().round(branch.fee))}</p><p>${branch.label}</p><p class="result-card__detail">${type === "margin" ? `${target}% target margin` : `${core().money(target)} target profit`}</p>`;
+  return card;
+}
+
+function renderReverse() {
+  const output = document.getElementById("reverseResults");
+  if (!output || !core()) return;
+  const cost = valueOf("reverseCost");
+  const target = valueOf("reverseTarget");
+  const shipping = valueOf("reverseShipping");
+  const type = document.getElementById("reverseTargetType")?.value || "amount";
+  output.innerHTML = "";
+  PLATFORMS.forEach((platform) => {
+    const branches = core().reverse(platform, cost, target, shipping, type);
+    if (!branches.length) {
+      const card = document.createElement("article");
+      card.className = "result-card";
+      card.innerHTML = `<h3>${platform}</h3><p>This target margin is not achievable with the selected assumptions.</p>`;
+      output.appendChild(card);
+    } else branches.forEach((branch) => output.appendChild(reverseCard(platform, branch, type, target)));
+  });
+}
+
+function renderForward() {
+  const output = document.getElementById("results");
+  if (!output || !core()) return;
+  const values = { price:valueOf("salePrice"), cost:valueOf("itemCost"), shipping:valueOf("sellerShipping"), buyerShipping:valueOf("buyerShipping") };
+  const calculations = PLATFORMS.map((platform) => core().forward(platform, values.price, values.cost, values.shipping, values.buyerShipping)).sort((a,b) => b.profit - a.profit);
+  output.innerHTML = calculations.map((item, index) => `<article class="result-card${index === 0 ? " result-card--best" : ""}"><h3>${item.name}</h3>${index === 0 ? "<strong>Best estimated profit</strong>" : ""}<p>Estimated fees: ${core().money(item.fee)}</p><p>Net payout: ${core().money(item.net)}</p><p>Estimated profit: ${core().money(item.profit)}</p><p>Profit margin: ${item.margin.toFixed(1)}%</p></article>`).join("");
+  const recommendation = document.getElementById("recommendation");
+  if (recommendation && calculations[0]) recommendation.innerHTML = `<p>Based on these assumptions, <strong>${calculations[0].name}</strong> produces the highest estimated profit at <strong>${core().money(calculations[0].profit)}</strong>.</p>`;
+}
+
+function setMode(mode) {
+  const reverse = mode === "reverse";
+  document.getElementById("reverseCalculator")?.toggleAttribute("hidden", !reverse);
+  document.getElementById("forwardCalculator")?.toggleAttribute("hidden", reverse);
+  document.getElementById("reverseModeButton")?.setAttribute("aria-selected", String(reverse));
+  document.getElementById("forwardModeButton")?.setAttribute("aria-selected", String(!reverse));
+  document.getElementById("reverseModeButton")?.classList.toggle("secondary", !reverse);
+  document.getElementById("forwardModeButton")?.classList.toggle("secondary", reverse);
+  reverse ? renderReverse() : renderForward();
+}
+
+function bindInput(ids, handler) { ids.forEach((id) => { document.getElementById(id)?.addEventListener("input", handler); document.getElementById(id)?.addEventListener("change", handler); }); }
+
+function initReversePage() {
+  if (!document.getElementById("reversePageResults")) return;
+  const output = document.getElementById("reversePageResults");
+  const render = () => {
+    const type = document.getElementById("pageTargetType")?.value || "amount";
+    const cost = valueOf("pageCost"); const target = valueOf("pageTarget"); const shipping = valueOf("pageShipping");
+    output.innerHTML = "";
+    PLATFORMS.forEach((platform) => core().reverse(platform, cost, target, shipping, type).forEach((branch) => output.appendChild(reverseCard(platform, branch, type, target))));
+  };
+  bindInput(["pageCost", "pageTarget", "pageShipping", "pageTargetType"], render); render();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("reverseModeButton")?.addEventListener("click", () => setMode("reverse"));
+  document.getElementById("forwardModeButton")?.addEventListener("click", () => setMode("forward"));
+  bindInput(["reverseCost", "reverseTarget", "reverseShipping", "reverseTargetType"], renderReverse);
+  bindInput(["salePrice", "itemCost", "sellerShipping", "buyerShipping"], renderForward);
+  if (document.getElementById("reverseResults")) setMode("reverse");
+  initReversePage();
+});
