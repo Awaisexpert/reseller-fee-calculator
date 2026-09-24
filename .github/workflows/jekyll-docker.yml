@@ -1,20 +1,67 @@
-name: Jekyll site CI
+name: Static site validation
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-
+  validate:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate HTML and local links
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          root = Path('.')
+          files = {p.name for p in root.iterdir() if p.is_file()}
+          errors = []
+
+          class Checker(HTMLParser):
+              def __init__(self, filename):
+                  super().__init__()
+                  self.filename = filename
+              def handle_starttag(self, tag, attrs):
+                  for name, value in attrs:
+                      if name not in {'href', 'src'} or not value:
+                          continue
+                      parsed = urlparse(value)
+                      if parsed.scheme or parsed.netloc or value.startswith(('#', 'mailto:', 'tel:', 'javascript:')):
+                          continue
+                      target = value.split('#', 1)[0].split('?', 1)[0].lstrip('/')
+                      if target and target not in files and not Path(target).exists():
+                          errors.append(f'{self.filename}: missing local target {value}')
+
+          for html in root.glob('*.html'):
+              try:
+                  Checker(html.name).feed(html.read_text(encoding='utf-8'))
+              except Exception as exc:
+                  errors.append(f'{html.name}: invalid HTML input ({exc})')
+
+          if errors:
+              print('\n'.join(errors))
+              raise SystemExit(1)
+          print(f'Checked {len(list(root.glob("*.html")))} HTML pages and local links successfully.')
+          PY
+
+      - name: Validate XML and JSON configuration
+        run: |
+          python - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          json.loads(Path('vercel.json').read_text(encoding='utf-8'))
+          ET.parse('sitemap.xml')
+          print('vercel.json and sitemap.xml are valid.')
+          PY
