@@ -17,6 +17,71 @@
       "source": "/index.html",
       "destination": "/",
       "statusCode": 308
+    },
+    {
+      "source": "/ebay-fee-calculator",
+      "destination": "/ebay-fee-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/etsy-fee-calculator",
+      "destination": "/etsy-fee-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/poshmark-fee-calculator",
+      "destination": "/poshmark-fee-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/mercari-fee-calculator",
+      "destination": "/mercari-fee-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/depop-fee-calculator",
+      "destination": "/depop-fee-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/vinted-fee-calculator",
+      "destination": "/vinted-fee-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/reverse-price-calculator",
+      "destination": "/reverse-price-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/poshmark-vs-ebay",
+      "destination": "/poshmark-vs-ebay.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/depop-vs-poshmark",
+      "destination": "/depop-vs-poshmark.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/mercari-vs-poshmark",
+      "destination": "/mercari-vs-poshmark.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/reseller-profit-calculator",
+      "destination": "/reseller-profit-calculator.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/reseller-tax-guide",
+      "destination": "/reseller-tax-guide.html",
+      "statusCode": 308
+    },
+    {
+      "source": "/marketplace-fee-guide",
+      "destination": "/marketplace-fee-guide.html",
+      "statusCode": 308
     }
   ]
 }
