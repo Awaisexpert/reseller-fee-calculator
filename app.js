@@ -57,7 +57,7 @@
       var branches = reverse(p, read(root, "cost"), target, read(root, "ship"), type);
       if (!branches.length) { html += card("<h3>" + p + "</h3><p>This target margin is not achievable with the selected assumptions.</p>"); return; }
       branches.forEach(function (b) {
-        html += card("<h3>" + p + '</h3><p>Required listing price</p><p class="value">' + money(round(b.price)) + "</p><p>Estimated fee: " + money(round(b.fee)) + "</p><p>" + b.label + "</p><p>" + (type === "margin" ? target + "% target margin" : money(target) + " target profit") + "</p>");
+        html += card("<h3>" + p + '</h3><p>Required listing price</p><p class="value">' + money(round(b.price)) + "</p><p>Estimated fee: " + money(round(b.fee)) + "</p><p>" + b.label + "</p><p>" + (type === "margin" ? "Target margin" : "Target amount") + ": " + (type === "margin" ? target + "%" : money(target)) + "</p>");
       });
     });
     out.innerHTML = html;
@@ -69,7 +69,7 @@
     var rows = list.map(function (p) { return forward(p, read(root, "price"), read(root, "cost"), read(root, "ship"), read(root, "buyer")); });
     if (rows.length > 1) rows.sort(function (a, b) { return b.profit - a.profit; });
     out.innerHTML = rows.map(function (r, i) {
-      return card("<h3>" + r.name + "</h3>" + (rows.length > 1 && i === 0 ? '<p class="badge">Best estimated profit</p>' : "") + "<p>Estimated fees: " + money(r.fee) + "</p><p>Net payout: " + money(r.net) + '</p><p>Estimated profit: <strong>' + money(r.profit) + "</strong></p><p>Profit margin: " + r.margin.toFixed(1) + "%</p>", rows.length > 1 && i === 0 ? "result-card--best" : "");
+      return card("<h3>" + r.name + "</h3>" + (rows.length > 1 && i === 0 ? '<p class="badge">Best estimated profit</p>' : "") + "<p>Estimated fees: " + money(r.fee) + "</p><p>Net payout: " + money(r.net) + "</p><p>Profit after costs: " + money(r.profit) + "</p><p>Margin: " + round(r.margin) + "%</p>");
     }).join("");
     if (reco && rows.length > 1) reco.innerHTML = "<p>Based on these assumptions, <strong>" + rows[0].name + "</strong> produces the highest estimated profit at <strong>" + money(rows[0].profit) + "</strong>.</p>";
   }
@@ -97,15 +97,181 @@
     });
   }
 
+  var PAGE_LINKS = [
+    { path: "/", label: "Home" },
+    { path: "/reverse-price-calculator", label: "Reverse Price Calculator" },
+    { path: "/ebay-fee-calculator", label: "eBay Fee Calculator" },
+    { path: "/poshmark-fee-calculator", label: "Poshmark Fee Calculator" },
+    { path: "/mercari-fee-calculator", label: "Mercari Fee Calculator" },
+    { path: "/etsy-fee-calculator", label: "Etsy Fee Calculator" },
+    { path: "/depop-fee-calculator", label: "Depop Fee Calculator" },
+    { path: "/poshmark-vs-ebay", label: "Poshmark vs eBay" },
+    { path: "/depop-vs-poshmark", label: "Depop vs Poshmark" },
+    { path: "/mercari-vs-poshmark", label: "Mercari vs Poshmark" },
+    { path: "/reseller-profit-calculator", label: "Reseller Profit Calculator" },
+    { path: "/reseller-tax-guide", label: "Reseller Tax Guide" },
+    { path: "/marketplace-fee-guide", label: "Marketplace Fee Guide" }
+  ];
+
+  function normalizePathname(pathname) {
+    var value = (pathname || "/");
+    value = value.split("?")[0].split("#")[0];
+    if (!value || value === "/index.html") return "/";
+    value = value.replace(/\/index\.html$/, "/");
+    value = value.replace(/\.html$/, "");
+    if (value.length > 1 && value.endsWith("/")) value = value.slice(0, -1);
+    return value || "/";
+  }
+
+  function normalizeLocalUrl(raw) {
+    if (!raw) return raw;
+    if (raw.charAt(0) === "#") return raw;
+    if (raw.indexOf("mailto:") === 0 || raw.indexOf("tel:") === 0 || raw.indexOf("http://") === 0 || raw.indexOf("https://") === 0 || raw.indexOf("javascript:") === 0) {
+      return raw;
+    }
+    if (raw.indexOf("//") === 0) return raw;
+    var rel = raw.trim();
+    if (rel === "./" || rel === ".") return "/";
+    if (rel === "index.html") return "/";
+    if (rel.indexOf("/") === 0) {
+      if (rel.indexOf(".html") > -1) rel = rel.replace(/\.html$/, "");
+      return rel;
+    }
+    if (rel.indexOf(".") === 0) {
+      rel = rel.replace(/^\.\//, "");
+      if (rel.indexOf(".html") > -1) rel = rel.replace(/\.html$/, "");
+      return "/" + rel;
+    }
+    if (rel.indexOf(".html") > -1) {
+      return "/" + rel.replace(/\.html$/, "");
+    }
+    if (rel === "" || rel === "/") return "/";
+    return "/" + rel.replace(/^\//, "");
+  }
+
+  function updateCanonical() {
+    var target = "https://www.reseller-fee-calculator.com" + normalizePathname(window.location.pathname);
+    if (target === "https://www.reseller-fee-calculator.com/") {
+      target = "https://www.reseller-fee-calculator.com/";
+    }
+    var canon = document.querySelector('link[rel="canonical"]');
+    if (canon) canon.setAttribute("href", target);
+  }
+
+  function getPageTitle() {
+    var titleNode = document.querySelector("main h1") || document.querySelector("h1");
+    if (titleNode) return titleNode.textContent.trim();
+    var text = document.title || "Home";
+    return text.split("|")[0].trim() || "Home";
+  }
+
+  function ensureBreadcrumb() {
+    var main = document.querySelector("main") || document.getElementById("main") || document.querySelector("body > .page");
+    if (!main) return;
+    var existing = main.querySelector(".crumbs");
+    if (existing) existing.remove();
+    var current = normalizePathname(window.location.pathname);
+    var label = getPageTitle();
+    if (current === "/") label = "Home";
+    var crumbs = document.createElement("nav");
+    crumbs.className = "crumbs";
+    crumbs.setAttribute("aria-label", "Breadcrumb");
+    crumbs.innerHTML = '<ol><li><a href="/">Home</a></li><li aria-current="page">' + label + '</li></ol>';
+    if (current !== "/") main.insertBefore(crumbs, main.firstChild);
+  }
+
+  function buildNavMarkup(currentPath) {
+    var navLinks = PAGE_LINKS.map(function (page) {
+      var active = normalizePathname(page.path) === currentPath ? ' aria-current="page"' : "";
+      return '<a href="' + page.path + '"' + active + '>' + page.label + '</a>';
+    }).join("");
+    return '<div class="wrap nav"><a class="brand" href="/" aria-label="Reseller Fee Calculator home">Reseller <span>Fee Calculator</span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">Menu</button><nav id="site-nav" class="site-nav" aria-label="Main navigation"><div class="nav-links">' + navLinks + '</div></nav></div>';
+  }
+
+  function ensureSharedLayout() {
+    var currentPath = normalizePathname(window.location.pathname);
+    var header = document.querySelector("header.site-header") || document.querySelector("header.topbar") || document.querySelector("header");
+    if (!header || !header.classList.contains("site-header")) {
+      var newHeader = document.createElement("header");
+      newHeader.className = "site-header";
+      newHeader.innerHTML = buildNavMarkup(currentPath);
+      var first = document.body.firstChild;
+      if (first) document.body.insertBefore(newHeader, first); else document.body.appendChild(newHeader);
+    } else {
+      header.className = "site-header";
+      header.innerHTML = buildNavMarkup(currentPath);
+    }
+
+    var footer = document.querySelector("footer.site-footer") || document.querySelector("footer.foot") || document.querySelector("footer");
+    if (!footer || !footer.classList.contains("site-footer")) {
+      var newFooter = document.createElement("footer");
+      newFooter.className = "site-footer";
+      newFooter.innerHTML = '<div class="wrap foot-grid"><div><h2>Reseller Fee Calculator</h2><p>Simple, U.S.-friendly fee estimates for marketplace resellers.</p></div><div><h2>Marketplaces</h2><ul><li><a href="/ebay-fee-calculator">eBay</a></li><li><a href="/poshmark-fee-calculator">Poshmark</a></li><li><a href="/mercari-fee-calculator">Mercari</a></li><li><a href="/etsy-fee-calculator">Etsy</a></li><li><a href="/depop-fee-calculator">Depop</a></li></ul></div><div><h2>Tools</h2><ul><li><a href="/reverse-price-calculator">Reverse price calculator</a></li><li><a href="/reseller-profit-calculator">Profit calculator</a></li><li><a href="/reseller-tax-guide">Tax guide</a></li></ul></div><div><h2>Compare</h2><ul><li><a href="/poshmark-vs-ebay">Poshmark vs eBay</a></li><li><a href="/depop-vs-poshmark">Depop vs Poshmark</a></li><li><a href="/mercari-vs-poshmark">Mercari vs Poshmark</a></li><li><a href="/marketplace-fee-guide">Fee guide</a></li></ul></div></div><div class="wrap legal"><p>© 2026 Reseller Fee Calculator. All fees and estimates are planning tools.</p></div>';
+      document.body.appendChild(newFooter);
+    } else {
+      footer.className = "site-footer";
+      footer.innerHTML = '<div class="wrap foot-grid"><div><h2>Reseller Fee Calculator</h2><p>Simple, U.S.-friendly fee estimates for marketplace resellers.</p></div><div><h2>Marketplaces</h2><ul><li><a href="/ebay-fee-calculator">eBay</a></li><li><a href="/poshmark-fee-calculator">Poshmark</a></li><li><a href="/mercari-fee-calculator">Mercari</a></li><li><a href="/etsy-fee-calculator">Etsy</a></li><li><a href="/depop-fee-calculator">Depop</a></li></ul></div><div><h2>Tools</h2><ul><li><a href="/reverse-price-calculator">Reverse price calculator</a></li><li><a href="/reseller-profit-calculator">Profit calculator</a></li><li><a href="/reseller-tax-guide">Tax guide</a></li></ul></div><div><h2>Compare</h2><ul><li><a href="/poshmark-vs-ebay">Poshmark vs eBay</a></li><li><a href="/depop-vs-poshmark">Depop vs Poshmark</a></li><li><a href="/mercari-vs-poshmark">Mercari vs Poshmark</a></li><li><a href="/marketplace-fee-guide">Fee guide</a></li></ul></div></div><div class="wrap legal"><p>© 2026 Reseller Fee Calculator. All fees and estimates are planning tools.</p></div>';
+    }
+
+    ensureBreadcrumb();
+    updateCanonical();
+    normalizeLinks();
+  }
+
+  function normalizeLinks() {
+    document.querySelectorAll("a[href]").forEach(function (link) {
+      var raw = link.getAttribute("href");
+      if (!raw || raw.charAt(0) === "#") return;
+      if (raw.indexOf("mailto:") === 0 || raw.indexOf("tel:") === 0 || raw.indexOf("http://") === 0 || raw.indexOf("https://") === 0 || raw.indexOf("javascript:") === 0) return;
+      if (raw.indexOf("//") === 0) return;
+      var next = normalizeLocalUrl(raw);
+      if (next && next !== raw) link.setAttribute("href", next);
+    });
+    document.querySelectorAll("link[href]").forEach(function (link) {
+      var raw = link.getAttribute("href");
+      if (!raw || raw.charAt(0) === "#") return;
+      if (raw.indexOf("http://") === 0 || raw.indexOf("https://") === 0 || raw.indexOf("mailto:") === 0) return;
+      if (raw.indexOf("/") === 0 || raw.indexOf("./") === 0 || raw.indexOf("../") === 0 || raw.indexOf(".css") > -1 || raw.indexOf(".svg") > -1 || raw.indexOf(".png") > -1 || raw.indexOf(".ico") > -1) {
+        if (raw.indexOf(".html") > -1) link.setAttribute("href", normalizeLocalUrl(raw));
+      }
+    });
+    document.querySelectorAll("script[src]").forEach(function (script) {
+      var raw = script.getAttribute("src");
+      if (!raw || raw.indexOf("http://") === 0 || raw.indexOf("https://") === 0 || raw.indexOf("//") === 0) return;
+      if (raw.indexOf(".js") > -1 && raw.indexOf("/") !== 0) script.setAttribute("src", "/" + raw.replace(/^\.\//, "").replace(/^\.\//, ""));
+      if (raw.indexOf("/") !== 0 && raw.indexOf(".js") > -1) script.setAttribute("src", "/" + raw);
+    });
+  }
+
   function initMenu() {
-    var t = document.querySelector(".nav-toggle"), n = document.getElementById("site-nav");
-    if (!t || !n) return;
-    var set = function (o) { n.classList.toggle("open", o); t.setAttribute("aria-expanded", String(o)); t.textContent = o ? "Close" : "Menu"; };
-    t.addEventListener("click", function () { set(!n.classList.contains("open")); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && n.classList.contains("open")) { set(false); t.focus(); } });
-    n.addEventListener("click", function (e) { if (e.target.closest("a")) set(false); });
+    var toggle = document.querySelector(".nav-toggle");
+    var nav = document.getElementById("site-nav");
+    if (!toggle || !nav) return;
+    var setOpen = function (open) {
+      nav.classList.toggle("open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.textContent = open ? "Close" : "Menu";
+    };
+    toggle.addEventListener("click", function () {
+      setOpen(!nav.classList.contains("open"));
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && nav.classList.contains("open")) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    nav.addEventListener("click", function (event) {
+      if (event.target && event.target.closest("a")) {
+        setOpen(false);
+      }
+    });
   }
 
   window.ResellerCalculator = { FEES: FEES, money: money, round: round, reverse: reverse, forward: forward };
-  document.addEventListener("DOMContentLoaded", function () { initCalcs(); initMenu(); });
+  document.addEventListener("DOMContentLoaded", function () {
+    ensureSharedLayout();
+    initCalcs();
+    initMenu();
+  });
 })();
