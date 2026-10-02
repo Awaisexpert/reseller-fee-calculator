@@ -1,0 +1,34 @@
+# Reseller Fee Calculator
+
+> Free U.S. tools that estimate marketplace fees and the listing price needed to hit a target profit on eBay, Poshmark, Mercari, Etsy, Depop, and Vinted. All amounts are planning estimates in U.S. dollars.
+
+## Calculators
+- [Target profit reseller fee calculator](https://www.reseller-fee-calculator.com/): Free U.S. reseller fee calculator. Enter item cost, target profit, and shipping to see the listing price you need on eBay, Poshmark, Mercari, Etsy, and Depop.
+- [Reverse price calculator](https://www.reseller-fee-calculator.com/reverse-price-calculator): Work backward from the profit you want. See the listing price required after fees and seller-paid shipping on eBay, Poshmark, Mercari, Etsy, and Depop.
+- [eBay fee calculator](https://www.reseller-fee-calculator.com/ebay-fee-calculator): Estimate eBay seller fees, shipping costs, and net profit for U.S. resale sales. Enter your sale price and item cost to see exactly what you keep after fees.
+- [Poshmark fee calculator](https://www.reseller-fee-calculator.com/poshmark-fee-calculator): Estimate Poshmark fees and net earnings for U.S. sellers. Enter your sale price, item cost, and shipping to see what you keep after Poshmark's commission.
+- [Mercari fee calculator](https://www.reseller-fee-calculator.com/mercari-fee-calculator): Estimate Mercari fees, shipping, net payout, and profit margin for U.S. resellers. Enter your sale price and item cost to see what you keep on each sale.
+- [Etsy fee calculator](https://www.reseller-fee-calculator.com/etsy-fee-calculator): Understand Etsy listing, transaction, payment processing, and Offsite Ads fees with a worked U.S. seller example and a calculator to estimate your payout.
+- [Depop fee calculator](https://www.reseller-fee-calculator.com/depop-fee-calculator): Estimate Depop fees, shipping, net payout, and profit for U.S. fashion resellers. Enter your sale price and item cost to see what you keep after fees.
+- [Vinted fee calculator](https://www.reseller-fee-calculator.com/vinted-fee-calculator): Calculate your Vinted U.S. seller payout. Vinted does not charge sellers a selling fee; buyers pay Buyer Protection. See what you keep after shipping.
+- [Reseller profit calculator](https://www.reseller-fee-calculator.com/reseller-profit-calculator): Estimate net profit on resale items after sale price, item cost, shipping, and marketplace fees. Compare profit across five U.S. marketplaces before you list.
+
+## Comparisons
+- [Poshmark vs eBay](https://www.reseller-fee-calculator.com/poshmark-vs-ebay): Compare estimated Poshmark and eBay fees, shipping, net payout, and profit margin for U.S. resellers. See which marketplace pays you more on a specific item.
+- [Depop vs Poshmark](https://www.reseller-fee-calculator.com/depop-vs-poshmark): Compare Depop and Poshmark fees, shipping costs, and resale margins for U.S. sellers. Enter your item details to see which platform is more profitable.
+- [Mercari vs Poshmark](https://www.reseller-fee-calculator.com/mercari-vs-poshmark): Compare Mercari and Poshmark fees, shipping, and net profit for U.S. resellers. Enter your item details to see which marketplace leaves you more profit.
+
+## Guides
+- [Marketplace fee guide](https://www.reseller-fee-calculator.com/marketplace-fee-guide): Learn the main marketplace fees, shipping costs, and profit traps that quietly cut into resale earnings across eBay, Mercari, Poshmark, Depop, and Etsy.
+- [Reseller tax guide](https://www.reseller-fee-calculator.com/reseller-tax-guide): Learn how state sales tax, resale taxes, and profit tracking affect U.S. seller earnings, and what to estimate and record before you list new inventory.
+
+## Fee assumptions used by the calculators
+- eBay: 13.25% plus a $0.30 fixed fee.
+- Poshmark: $2.95 on sales under $15 and 20% at $15 and above.
+- Mercari: a 10% estimated fee.
+- Etsy: 9.5% (6.5% transaction plus 3% payment processing) plus $0.45 in fixed fees.
+- Depop: a 10% estimated fee.
+- Vinted: sellers pay 0% commission in the U.S.; buyers pay Buyer Protection.
+
+## Notes
+- Estimates are for planning only. Verify current rates with each marketplace before listing.
