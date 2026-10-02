@@ -1,0 +1,28 @@
+{
+  "name": "reseller-fee-calculator",
+  "version": "1.0.0",
+  "description": "Free U.S. reseller fee calculator. Enter item cost, target profit, and shipping to see the listing price you need on eBay, Poshmark, Mercari, Etsy, and Depop.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild speed-insights.js --bundle --format=esm --outfile=_build/speed-insights.js --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Awaisexpert/reseller-fee-calculator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Awaisexpert/reseller-fee-calculator/issues"
+  },
+  "homepage": "https://github.com/Awaisexpert/reseller-fee-calculator#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

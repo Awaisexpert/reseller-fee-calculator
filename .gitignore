@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build artifacts (keep _build/speed-insights.js as it's required for the site)
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
