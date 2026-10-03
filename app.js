@@ -57,7 +57,7 @@
       var branches = reverse(p, read(root, "cost"), target, read(root, "ship"), type);
       if (!branches.length) { html += card("<h3>" + p + "</h3><p>This target margin is not achievable with the selected assumptions.</p>"); return; }
       branches.forEach(function (b) {
-        html += card("<h3>" + p + '</h3><p>Required listing price</p><p class="value">' + money(round(b.price)) + "</p><p>Estimated fee: " + money(round(b.fee)) + "</p><p>" + b.label + "</p><p>" +[...]
+        html += card("<h3>" + p + '</h3><p>Required listing price</p><p class="value">' + money(round(b.price)) + "</p><p>Estimated fee: " + money(round(b.fee)) + "</p><p>" + b.label + "</p><p>" + (type === "margin" ? target + "% target margin" : money(target) + " target profit") + "</p>");
       });
     });
     out.innerHTML = html;
@@ -69,7 +69,7 @@
     var rows = list.map(function (p) { return forward(p, read(root, "price"), read(root, "cost"), read(root, "ship"), read(root, "buyer")); });
     if (rows.length > 1) rows.sort(function (a, b) { return b.profit - a.profit; });
     out.innerHTML = rows.map(function (r, i) {
-      return card("<h3>" + r.name + "</h3>" + (rows.length > 1 && i === 0 ? '<p class="badge">Best estimated profit</p>' : "") + "<p>Estimated fees: " + money(r.fee) + "</p><p>Net payout: " + money(r.net) + "</p><p>Estimated profit: " + money(r.profit) + "</p><p>Margin: " + round(r.margin) + "%</p>");
+      return card("<h3>" + r.name + "</h3>" + (rows.length > 1 && i === 0 ? '<p class="badge">Best estimated profit</p>' : "") + "<p>Estimated fees: " + money(r.fee) + "</p><p>Net payout: " + money(r.net) + '</p><p>Estimated profit: <strong>' + money(r.profit) + "</strong></p><p>Profit margin: " + r.margin.toFixed(1) + "%</p>", rows.length > 1 && i === 0 ? "result-card--best" : "");
     }).join("");
     if (reco && rows.length > 1) reco.innerHTML = "<p>Based on these assumptions, <strong>" + rows[0].name + "</strong> produces the highest estimated profit at <strong>" + money(rows[0].profit) + "</strong>.</p>";
   }
@@ -118,3 +118,4 @@
   window.ResellerCalculator = { FEES: FEES, money: money, round: round, reverse: reverse, forward: forward };
   document.addEventListener("DOMContentLoaded", function () { initCalcs(); initMenu(); injectSpeedInsights(); });
 })();
+                                      
