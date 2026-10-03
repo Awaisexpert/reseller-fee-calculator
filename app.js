@@ -2,15 +2,20 @@
 (function () {
   "use strict";
   var FEES = {
-    eBay: { rate: 0.1325, fixed: 0.30 }, Poshmark: { rate: 0.20, fixed: 0 }, Mercari: { rate: 0.10, fixed: 0 },
-    Etsy: { rate: 0.095, fixed: 0.45 }, Depop: { rate: 0.10, fixed: 0 }
+    eBay: { rate: 0.136, fixed: 0.30 }, Poshmark: { rate: 0.20, fixed: 0 }, Mercari: { rate: 0.10, fixed: 0 },
+    Etsy: { rate: 0.095, fixed: 0.45 }, Depop: { rate: 0.033, fixed: 0.45 }
   };
   var ALL = Object.keys(FEES);
   var usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
   var money = function (v) { return usd.format(Number.isFinite(v) ? v : 0); };
   var clean = function (v) { return Math.max(0, Number(v) || 0); };
   var round = function (v) { return Math.round((v + Number.EPSILON) * 100) / 100; };
-  var feeLabel = function (p) { var f = FEES[p]; return parseFloat((f.rate * 100).toFixed(2)) + "% fee" + (f.fixed ? " + " + money(f.fixed) : ""); };
+
+  var feeLabel = function (p) {
+    if (p === "eBay") return "13.6% fee + $0.30-$0.40";
+    var f = FEES[p];
+    return parseFloat((f.rate * 100).toFixed(2)) + "% fee" + (f.fixed ? " + " + money(f.fixed) : "");
+  };
 
   function reverse(platform, cost, target, shipping, type) {
     cost = clean(cost); target = clean(target); shipping = clean(shipping);
@@ -26,6 +31,11 @@
       }
       var den = 1 - fee.rate - m;
       if (den <= 0) return out;
+      if (platform === "eBay") {
+        var fixed = 0.30, price = (expenses + fixed) / den;
+        if (price > 10) { fixed = 0.40; price = (expenses + fixed) / den; }
+        return [{ price: price, fee: price * fee.rate + fixed, label: feeLabel(platform) }];
+      }
       var price = (expenses + fee.fixed) / den;
       return [{ price: price, fee: price * fee.rate + fee.fixed, label: feeLabel(platform) }];
     }
@@ -36,6 +46,11 @@
       if (pct >= 15) out.push({ price: pct, fee: pct * fee.rate, label: "20% fee" });
       return out;
     }
+    if (platform === "eBay") {
+      var fixed = 0.30, p2 = (base + fixed) / (1 - fee.rate);
+      if (p2 > 10) { fixed = 0.40; p2 = (base + fixed) / (1 - fee.rate); }
+      return [{ price: p2, fee: p2 * fee.rate + fixed, label: feeLabel(platform) }];
+    }
     var p2 = (base + fee.fixed) / (1 - fee.rate);
     return [{ price: p2, fee: p2 * fee.rate + fee.fixed, label: feeLabel(platform) }];
   }
@@ -43,7 +58,12 @@
   function forward(platform, price, cost, shipping, buyerShipping) {
     price = clean(price); cost = clean(cost); shipping = clean(shipping); buyerShipping = clean(buyerShipping);
     var base = price + buyerShipping;
+    if (platform === "Poshmark") base = price;
     var fee = platform === "Poshmark" ? (base < 15 ? 2.95 : base * 0.20) : base * FEES[platform].rate + FEES[platform].fixed;
+    if (platform === "eBay") {
+      var fixed = base <= 10 ? 0.30 : 0.40;
+      fee = base * FEES[platform].rate + fixed;
+    }
     var net = base - fee - shipping;
     return { name: platform, fee: fee, net: net, profit: net - cost, margin: price ? ((net - cost) / price) * 100 : 0 };
   }
@@ -82,18 +102,11 @@
   var RENDER = { reverse: renderReverse, forward: renderForward, vinted: renderVinted };
   function initCalcs() {
     document.querySelectorAll("[data-calc]").forEach(function (root) {
-      var fn = RENDER[root.getAttribute("data-calc")];
-      if (!fn) return;
-      var go = function () { fn(root); };
-      root.addEventListener("input", go); root.addEventListener("change", go); go();
-    });
-    var btns = document.querySelectorAll("[data-mode-btn]");
-    btns.forEach(function (b) {
-      b.addEventListener("click", function () {
-        var mode = b.getAttribute("data-mode-btn");
-        btns.forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
-        document.querySelectorAll("[data-mode-panel]").forEach(function (p) { p.hidden = p.getAttribute("data-mode-panel") !== mode; });
-      });
+      var calc = root.getAttribute("data-calc");
+      if (!calc || !RENDER[calc]) return;
+      var update = function () { RENDER[calc](root); };
+      root.querySelectorAll("[data-in]").forEach(function (field) { field.addEventListener("input", update); field.addEventListener("change", update); });
+      update();
     });
   }
 
@@ -118,4 +131,3 @@
   window.ResellerCalculator = { FEES: FEES, money: money, round: round, reverse: reverse, forward: forward };
   document.addEventListener("DOMContentLoaded", function () { initCalcs(); initMenu(); injectSpeedInsights(); });
 })();
-                                      
