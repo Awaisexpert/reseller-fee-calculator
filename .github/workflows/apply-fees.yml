@@ -1,0 +1,23 @@
+name: Apply fee text update
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run update script
+        shell: bash
+        run: |
+          python3 _build/update_fees.py | tee out.txt
+          grep -q "ALL CHECKS PASSED" out.txt
+      - name: Commit changes
+        shell: bash
+        run: |
+          rm -f out.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Nothing to commit"; else git commit -m "Update fee text" && git push; fi
