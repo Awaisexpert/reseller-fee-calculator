@@ -15,7 +15,7 @@ jobs:
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-                            assignees: [context.repo.owner],
+              assignees: [context.repo.owner],
               title: "Fee rate check due",
               body: [
                 "Time to re-check marketplace fees (every 2 months).",
