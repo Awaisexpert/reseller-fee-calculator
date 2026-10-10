@@ -1,0 +1,31 @@
+name: Fee rate check reminder
+on:
+  schedule:
+    - cron: "0 9 1 */2 *"
+  workflow_dispatch: {}
+permissions:
+  issues: write
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Fee rate check due",
+              body: [
+                "Time to re-check marketplace fees (every 2 months).",
+                "",
+                "- [ ] eBay: final value fee %, per-order fee, what it applies to",
+                "- [ ] Poshmark: fee under $15 and at $15 or more",
+                "- [ ] Mercari: selling fee %, payment processing",
+                "- [ ] Etsy: listing, transaction, processing, Offsite Ads",
+                "- [ ] Depop (US): selling fee, processing, Boost",
+                "- [ ] Vinted (US): seller fee",
+                "",
+                "Copy the fee text from each OFFICIAL fee page, start a new chat with Claude, paste the text with the current rates, and ask for the update.",
+              ].join("\n"),
+            });
