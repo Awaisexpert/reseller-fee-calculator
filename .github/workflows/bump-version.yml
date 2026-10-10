@@ -1,0 +1,19 @@
+name: Bump asset version
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version in all pages
+        shell: bash
+        run: |
+          V=$(date -u +%Y%m%d%H%M)
+          sed -i -E "s#(app\.js|styles\.css)\?v=[0-9]+#\1?v=$V#g" *.html
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Nothing to change"; else git commit -m "Bump asset version to $V" && git push; fi
