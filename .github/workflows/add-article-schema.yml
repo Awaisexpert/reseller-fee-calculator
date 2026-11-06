@@ -15,7 +15,7 @@ jobs:
           import json, re, html
           from datetime import date
           BASE = "https://www.reseller-fee-calculator.com"
-          pages = {"reseller-tax-guide.html": "reseller-tax-guide", "marketplace-fee-guide.html": "marketplace-fee-guide", "how-to-price-items.html": "how-to-price-items"}
+          pages = {"reseller-tax-guide.html": "reseller-tax-guide", "marketplace-fee-guide.html": "marketplace-fee-guide"}
           today = date.today().isoformat()
           for f, slug in pages.items():
               h = open(f, encoding="utf-8").read()
