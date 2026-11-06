@@ -15,7 +15,7 @@ jobs:
           import json, re, html
           from datetime import date
           BASE = "https://www.reseller-fee-calculator.com"
-          pages = {"reseller-tax-guide.html": "reseller-tax-guide", "marketplace-fee-guide.html": "marketplace-fee-guide"}
+          pages = {"reseller-tax-guide.html": "reseller-tax-guide", "marketplace-fee-guide.html": "marketplace-fee-guide", "how-to-price-items.html": "how-to-price-items"}
           today = date.today().isoformat()
           for f, slug in pages.items():
               h = open(f, encoding="utf-8").read()
@@ -25,7 +25,7 @@ jobs:
               desc = html.unescape(re.search(r'name="description" content="([^"]*)"', h).group(1))
               org = {"@type": "Organization", "name": "Reseller Fee Calculator", "url": BASE + "/"}
               d = {"@context": "https://schema.org", "@type": "Article", "headline": title, "description": desc,
-                   "mainEntityOfPage": BASE + "/" + slug, "datePublished": "2026-09-24", "dateModified": today,
+                   "mainEntityOfPage": BASE + "/" + slug, "datePublished": "2026-11-06", "dateModified": today,
                    "inLanguage": "en-US", "author": org, "publisher": org}
               s = '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False, separators=(",", ":")) + "</script>"
               json.loads(s[s.index(">") + 1:-9])
