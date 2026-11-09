@@ -1,0 +1,29 @@
+name: Apply patch
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch.zip
+        shell: bash
+        run: |
+          test -f _build/patch.zip || { echo "No _build/patch.zip found"; exit 1; }
+          rm -rf /tmp/patch && mkdir /tmp/patch && unzip -q _build/patch.zip -d /tmp/patch
+          rm -rf /tmp/patch/.github
+          if [ -f /tmp/patch/DELETE.txt ]; then
+            while IFS= read -r f; do
+              case "$f" in ""|*..*|/*|.git/*|.github/*) continue;; esac
+              git rm -rf --ignore-unmatch -- "$f" || true
+            done < /tmp/patch/DELETE.txt
+            rm /tmp/patch/DELETE.txt
+          fi
+          cp -a /tmp/patch/. .
+          rm -f _build/patch.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Nothing to commit"; else git commit -m "Apply patch" && git push; fi
