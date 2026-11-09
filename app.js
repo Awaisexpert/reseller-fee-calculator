@@ -2,15 +2,19 @@
 (function () {
   "use strict";
   var FEES = {
-    eBay: { rate: 0.136, fixed: 0.40 }, Poshmark: { rate: 0.20, fixed: 0 }, Mercari: { rate: 0.10, fixed: 0 },
-    Etsy: { rate: 0.095, fixed: 0.45 }, Depop: { rate: 0.033, fixed: 0.45 }
+    eBay: { rate: 0.136, fixed: 0.40 }, 
+    Poshmark: { rate: 0.20, fixed: 0 }, 
+    Mercari: { rate: 0.10, fixed: 0 },
+    Etsy: { rate: 0.095, fixed: 0.45 }, 
+    Depop: { rate: 0.033, fixed: 0.45 },
+    Whatnot: { rate: 0.109, fixed: 0.30 }
   };
   var ALL = Object.keys(FEES);
   var usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
   var money = function (v) { return usd.format(Number.isFinite(v) ? v : 0); };
   var clean = function (v) { return Math.max(0, Number(v) || 0); };
   var round = function (v) { return Math.round((v + Number.EPSILON) * 100) / 100; };
-  var feeLabel = function (p) { if (p === "eBay") return "13.6% fee + $0.30-$0.40"; var f = FEES[p]; return parseFloat((f.rate * 100).toFixed(2)) + "% fee" + (f.fixed ? " + " + money(f.fixed) : ""); };
+  var feeLabel = function (p) { if (p === "eBay") return "13.6% fee + $0.30-$0.40"; if (p === "Whatnot") return "10.9% fee + $0.30"; var f = FEES[p]; return parseFloat((f.rate * 100).toFixed(2)) + "% fee" + (f.fixed ? " + " + money(f.fixed) : ""); };
 
   function reverse(platform, cost, target, shipping, type) {
     cost = clean(cost); target = clean(target); shipping = clean(shipping);
