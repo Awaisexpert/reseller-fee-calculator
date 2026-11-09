@@ -30,5 +30,11 @@
 - Depop: Depop charges no selling fee in the U.S. The 3.3% + $0.45 is payment processing. Optional Boosted Listings cost 12%, which this calculator does not include.
 - Vinted: sellers pay 0% commission in the U.S.; buyers pay Buyer Protection.
 
+## Educational guides
+- [How to price items for resale](https://www.reseller-fee-calculator.com/how-to-price-for-resale): The resale pricing formula, a 5-step workflow, worked examples, and common pricing mistakes.
+- [Reseller fee glossary](https://www.reseller-fee-calculator.com/reseller-fee-glossary): Definitions of every reseller fee term: final value fee, net payout, COGS, margin, ROI.
+- [Methodology](https://www.reseller-fee-calculator.com/methodology): What the calculators include, exclude, and verify.
+- [About](https://www.reseller-fee-calculator.com/about): Who built the site and how it makes money (no ads, no data collection).
+
 ## Notes
 - Estimates are for planning only. Verify current rates with each marketplace before listing.
