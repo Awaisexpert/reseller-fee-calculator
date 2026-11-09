@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact Us | Reseller Fee Calculator</title>
+  <meta name="description" content="Contact Reseller Fee Calculator for corrections, feedback, or partnership inquiries.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://www.reseller-fee-calculator.com/contact">
+  <link rel="stylesheet" href="/styles.css?v=202610101734">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="/">Reseller <span>Fee Calculator</span></a>
+      <nav id="site-nav" class="nav-links">
+        <a href="/">Calculator</a><a href="/ebay-fee-calculator">eBay</a><a href="/poshmark-fee-calculator">Poshmark</a><a href="/marketplace-fee-guide">Fee guide</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="page">
+    <article>
+      <section class="hero">
+        <h1>Contact Us</h1>
+        <p class="lead">We are constantly verifying marketplace fees to keep our calculators accurate. If you spotted an error, have feedback, or want to partner with us, let us know.</p>
+      </section>
+      <section class="card section">
+        <h2>Email Us</h2>
+        <p>For all inquiries, please reach out to:</p>
+        <p style="font-size: 1.25rem; font-weight: bold; color: var(--brand);"><a href="mailto:hello@reseller-fee-calculator.com">hello@reseller-fee-calculator.com</a></p>
+        <p>We typically respond within 1–2 business days.</p>
+      </section>
+    </article>
+  </main>
+  <footer class="foot">
+    <div class="wrap"><p class="legal">© 2026 Reseller Fee Calculator. All amounts in U.S. dollars.</p></div>
+  </footer>
+  <script src="/app.js?v=202610101734" defer></script>
+</body>
+</html>
