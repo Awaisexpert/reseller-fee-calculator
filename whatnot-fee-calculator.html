@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Whatnot Fee Calculator: Net Profit for Sellers</title>
+  <meta name="description" content="Estimate Whatnot selling fees, payment processing, and net profit. Enter your sale price to see what you keep after fees.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://www.reseller-fee-calculator.com/whatnot-fee-calculator">
+  <link rel="stylesheet" href="/styles.css?v=202610101734">
+  <script>document.documentElement.className="js"</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="/">Reseller <span>Fee Calculator</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="nav-links">
+        <a href="/">Calculator</a><a href="/ebay-fee-calculator">eBay</a><a href="/poshmark-fee-calculator">Poshmark</a><a href="/mercari-fee-calculator">Mercari</a><a href="/etsy-fee-calculator">Etsy</a><a href="/depop-fee-calculator">Depop</a><a href="/vinted-fee-calculator">Vinted</a><a href="/whatnot-fee-calculator" aria-current="page">Whatnot</a><a href="/marketplace-fee-guide">Fee guide</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="page">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Whatnot fee calculator</li></ol></nav>
+    <article>
+      <section class="hero">
+        <p class="eyebrow">Whatnot · Live Selling</p>
+        <h1>Whatnot Fee Calculator</h1>
+        <p class="lead">Estimate your payout and profit after Whatnot's commission and payment processing fees.</p>
+      </section>
+      <section class="card calculator" data-calc="forward" data-platforms="Whatnot">
+        <h2>Whatnot profit calculator</h2>
+        <p>Enter your sale price, item cost, and shipping to estimate Whatnot fees and profit.</p>
+        <div class="form-grid">
+          <label>Expected sale price (USD)<input type="number" inputmode="decimal" min="0" step="0.01" value="50.00" data-in="price"></label>
+          <label>Item cost (USD)<input type="number" inputmode="decimal" min="0" step="0.01" value="10.00" data-in="cost"></label>
+          <label>Your shipping cost (USD)<input type="number" inputmode="decimal" min="0" step="0.01" value="5.00" data-in="ship"></label>
+          <label>Shipping paid by buyer (USD)<input type="number" inputmode="decimal" min="0" step="0.01" value="0.00" data-in="buyer"></label>
+        </div>
+        <div class="results" data-out aria-live="polite"></div>
+        <p class="fine-print">Estimates are for planning only. Whatnot charges an 8% commission on the item price plus standard payment processing (2.9% + $0.30). This calculator combines these into a 10.9% + $0.30 fee for simplicity. Taxes, refunds, and giveaways are not included.</p>
+      </section>
+      <section class="related" aria-labelledby="rel-h">
+        <h2 id="rel-h">Related calculators and guides</h2>
+        <div class="related-links">
+          <a href="/">Target profit calculator</a><a href="/marketplace-fee-guide">Marketplace fee guide</a><a href="/compare-reseller-fees">Compare all platforms</a>
+        </div>
+      </section>
+    </article>
+  </main>
+  <footer class="foot">
+    <div class="wrap"><p class="legal">© 2026 Reseller Fee Calculator. All amounts in U.S. dollars.</p></div>
+  </footer>
+  <script src="/app.js?v=202610101734" defer></script>
+</body>
+</html>
