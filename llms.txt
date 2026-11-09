@@ -1,4 +1,4 @@
-# Reseller Fee Calculator
+a# Reseller Fee Calculator
 
 > Free U.S. tools that estimate marketplace fees and the listing price needed to hit a target profit on eBay, Poshmark, Mercari, Etsy, Depop, and Vinted. All amounts are planning estimates in U.S. dollars.
 
@@ -35,6 +35,12 @@
 - [Reseller fee glossary](https://www.reseller-fee-calculator.com/reseller-fee-glossary): Definitions of every reseller fee term: final value fee, net payout, COGS, margin, ROI.
 - [Methodology](https://www.reseller-fee-calculator.com/methodology): What the calculators include, exclude, and verify.
 - [About](https://www.reseller-fee-calculator.com/about): Who built the site and how it makes money (no ads, no data collection).
+
+## New Platforms and Comparisons
+- [Whatnot fee calculator](https://www.reseller-fee-calculator.com/whatnot-fee-calculator): Estimate Whatnot fees, shipping, net payout, and profit for U.S. sellers.
+- [Compare reseller fees](https://www.reseller-fee-calculator.com/compare-reseller-fees): Compare seller fees across all major marketplaces in 2026.
+- [2026 Marketplace fee changes](https://www.reseller-fee-calculator.com/2026-marketplace-fee-changes): Breakdown of 2026 fee changes across eBay, Poshmark, Mercari, Etsy, and Depop.
+- [Contact us](https://www.reseller-fee-calculator.com/contact): Contact Reseller Fee Calculator.
 
 ## Notes
 - Estimates are for planning only. Verify current rates with each marketplace before listing.
